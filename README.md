@@ -18,18 +18,17 @@ The shell supports features like executing commands, changing directories (`cd`)
 6. **Pipes:** Support for connecting the output of one command to the input of another using the `|` symbol.
 
 ## Examples:
-**Change directory:**
-  cd /path/to/directory
-**Execute a command:**
-  ls -l
-**Exit the shell:**
-  exit
-**Redirect output to a file:**
-  ls > output.txt
-**Redirect input from a file:**
-  cat < input.txt
-**Use pipes:**
-  ls | grep keyword
+**Change directory:**   cd /path/to/directory
+
+**Execute a command:**  ls -l
+
+**Exit the shell:**     exit
+
+**Redirect output to a file:**   ls > output.txt
+
+**Redirect input from a file:**   cat < input.txt
+
+**Use pipes:**   ls | grep keyword
 
 
 
