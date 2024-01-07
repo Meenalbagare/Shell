@@ -116,13 +116,13 @@ void execute_command(char **args) {
 						//Parent processs ->left side of the pipe
 						//need to redirect standard input to the read end of the pipe
 						dup2(pipe_fd[0], STDIN_FILENO);
-                		close(pipe_fd[0]);
-                     	close(pipe_fd[1]);
+                				close(pipe_fd[0]);
+                     				close(pipe_fd[1]);
                      	
 						if (execvp(args[0],args)==-1) {
 							perror("execvp");
-                        	exit(EXIT_FAILURE);
-                        }
+                        				exit(EXIT_FAILURE);
+                        			}
 					}
 				}
 			}
