@@ -14,7 +14,6 @@ char initial_prompt=1;
 
 void display_prompt() {
 	char cwd[1024];
-
 	if (getcwd(cwd,sizeof(cwd))!=NULL) {
 		if (initial_prompt) {
 			printf("=) ");
@@ -58,7 +57,31 @@ void execute_command(char **args) {
 		}
 	} else if (strcmp(args[0],"exit")==0) {
 		exit(EXIT_SUCCESS);
-	} else{
+	} else if (strcmp(args[0], "cat") == 0) {
+        	//Cat command->testing input redirection
+		char c;
+		FILE* file = fopen(args[1], "r");
+		if (file == NULL) {
+		    perror("fopen");
+		    exit(EXIT_FAILURE);
+		}
+		while ((c = fgetc(file)) != EOF) {
+		    putchar(c);
+		}
+		fclose(file);
+		
+	}else{
+		int background=0;
+		
+		//checking if there is background execution
+		for(int i=0;args[i]!=NULL;++i){
+			if (strcmp(args[i],"&")==0){
+				background=1;
+				args[i]=NULL;
+				break;
+			}
+		}
+	
 		pid_t pid=fork();
 		if (pid==-1) {
 			perror("fork");
@@ -90,7 +113,6 @@ void execute_command(char **args) {
 					//checking for pipes
 					args[i]=NULL;
 					int pipe_fd[2];
-
 					if(pipe(pipe_fd)==-1) {
 						perror("pipe");
 						exit(EXIT_FAILURE);
@@ -116,15 +138,18 @@ void execute_command(char **args) {
 						//Parent processs ->left side of the pipe
 						//need to redirect standard input to the read end of the pipe
 						dup2(pipe_fd[0], STDIN_FILENO);
-                				close(pipe_fd[0]);
-                     				close(pipe_fd[1]);
+		                		close(pipe_fd[0]);
+			                     	close(pipe_fd[1]);
                      	
 						if (execvp(args[0],args)==-1) {
 							perror("execvp");
-                        				exit(EXIT_FAILURE);
+			                        	exit(EXIT_FAILURE);
                         			}
+
 					}
+
 				}
+
 			}
 
 			if (execvp(args[0],args)==-1) {
@@ -132,10 +157,13 @@ void execute_command(char **args) {
 				exit(EXIT_FAILURE);
 			}
 		}else {
-			wait(NULL);
+			if(!background){
+				wait(NULL);
+			}
 		}
-		}
+	}
 }
+
 int main(){
 	char input[MAX_INPUT_SIZE];
 	char* args[MAX_ARGS];
