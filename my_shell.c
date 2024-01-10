@@ -5,12 +5,25 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <fcntl.h>
+#include <signal.h>
+
 
 #define MAX_INPUT_SIZE 1024
 #define MAX_ARG_SIZE 64
 #define MAX_ARGS 16
 
 char initial_prompt=1;
+
+void handle_sigint(int signo) {
+	//CTRL+C is handled
+	printf("\nCaught Ctrl+C\n");
+}
+
+void handle_sigtstp(int signo) {
+	//CTRL+Z is handled
+	printf("\nCaught Ctrl+Z\n");
+}
+
 
 void display_prompt() {
 	char cwd[1024];
@@ -165,6 +178,10 @@ void execute_command(char **args) {
 }
 
 int main(){
+	//SIgnal handlers need to be specified
+	signal(SIGINT,handle_sigint);
+	signal(SIGTSTP,handle_sigtstp);
+
 	char input[MAX_INPUT_SIZE];
 	char* args[MAX_ARGS];
 
