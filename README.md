@@ -17,6 +17,10 @@ The shell supports features like executing commands, changing directories (`cd`)
 
 6. **Pipes:** Support for connecting the output of one command to the input of another using the `|` symbol.
 
+7.**Background process execution** When a background process terminates, the shell displays a message indicating the termination status.
+
+8.**Signal handling (Ctrl+C, Ctrl+Z)** 
+
 ## Examples:
 **Change directory:**   cd /path/to/directory
 
